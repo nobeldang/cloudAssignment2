@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <title>
+            Assignment 2
+        </title>
+        <script>
+            // define the callAPI function that takes a first name and last name as parameters
+            var callAPI = (showAnswer)=>{
+               uri = "https://0ir2v4z0uc.execute-api.us-east-1.amazonaws.com/dev/answers?q="+showAnswer
+                // make API call with parameters and use promises to get response
+                fetch(uri)
+                .then(response => response.text())
+                .then(result => alert(JSON.parse(result).body))
+                .catch(error => console.log('error', error));
+            }
+        </script>
+    </head>
+    <body>
+
+        <div style="height: 10%; margin-top: 50; margin-left: 40%;">
+            <input type="text" id="question" name="question" placeholder="Type Question" style="width: 30%; border: 2px solid red; border-radius: 4px;"><br>
+            <button style="width: 20%;">Post Question</button>
+        </div>
+        
+        <div style="height: 50px; margin-top: 20; margin-left: 40%;">
+            <input type="text" id="answer" name="answer" placeholder="Will Show Answer" style="width: 30%; border: 2px solid green; border-radius: 4px;"><br>
+            <button style="width: 20%;" onclick="callAPI(document.getElementById('answer').value)">Show Answer</button>
+        </div>
+    </body>
+</html>

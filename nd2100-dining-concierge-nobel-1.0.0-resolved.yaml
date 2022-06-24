@@ -1,0 +1,48 @@
+---
+swagger: "2.0"
+info:
+  description: This is a sample Chatbot API.
+  version: 1.0.0
+  title: Dining Concierge
+host: virtserver.swaggerhub.com
+basePath: /nd2100/dining-concierge-nobel/1.0.0
+schemes:
+- https
+paths:
+  /answers:
+    get:
+      produces:
+      - application/json
+      parameters:
+      - name: q
+        in: query
+        required: true
+        type: string
+      responses:
+        "200":
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              type: string
+          schema:
+            $ref: '#/definitions/Answer'
+      x-amazon-apigateway-request-validator: Validate query string parameters and headers
+      x-amazon-apigateway-integration:
+        type: aws
+        httpMethod: POST
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:350726698367:function:LF0
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        contentHandling: CONVERT_TO_TEXT
+definitions:
+  Answer:
+    type: object
+    title: Answer
+x-amazon-apigateway-request-validators:
+  Validate query string parameters and headers:
+    validateRequestParameters: true
+    validateRequestBody: false
